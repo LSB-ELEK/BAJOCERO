@@ -1,7 +1,11 @@
+//NECESARIA LA DESCARGAR DE LA LIBRERIA ADAFRUIT SENSOR MASTER
+// https://github.com/adafruit/Adafruit_Sensor
+
+
 #include <DHT.h>
 #include <LiquidCrystal_I2C.h>
 
-#define DHTTYPE DHT22
+#define DHTTYPE DHT22 //MODELO DEL SENSOR A UTILIZAR
 const int DHTPin = 5;
 
 DHT dht(DHTPin, DHTTYPE);
@@ -25,6 +29,6 @@ void loop(){
   lcd.print("Temp = ");
   lcd.print(t);
   lcd.print("\337C");
-  delay(5000);
+  delay(2000);
   lcd.clear();
 }
