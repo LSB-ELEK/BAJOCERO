@@ -19,7 +19,7 @@ void setup() {
   // Ver si inicializa la tarjeta
   if (!SD.begin(chipSelect)) {      // Si no inicia la tarjeta muestra el error
     Serial.println("Tarjeta fallida, o no encontrada.");
-    while (1);                      // En casop de fallar la tarjeta bloquea el programa
+    while (1);                      // En caso de fallar la tarjeta bloquea el programa
   }
   Serial.println("Tarjeta inicializada.");  
 
@@ -35,7 +35,9 @@ void loop() {
     archivo = SD.open("datos.txt", FILE_WRITE);   //abrir el archivo en modo escritura
      
     if(archivo){
-      archivo.println(dato_a_guardar);  // comando para escribir en el archivo
+      archivo.print("Tiempo: ");archivo.print(millis());archivo.println(" ms");
+      archivo.print("Contador: ");archivo.println(dato_a_guardar);  // comando para escribir en el archivo
+      archivo.println("=======");
       archivo.close();                  // cerrar el archivo para poder abrir otro
       Serial.print("Dato en archivo: ");Serial.println(dato_a_guardar); // imprime en el serial el dato del archivo
     }else{
