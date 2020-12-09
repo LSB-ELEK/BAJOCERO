@@ -1,5 +1,5 @@
-//NECESARIA LA DESCARGAR DE LA LIBRERIA ADAFRUIT SENSOR MASTER
-// https://github.com/adafruit/Adafruit_Sensor
+/*NECESARIA LA DESCARGAR DE LA LIBRERIA ADAFRUIT SENSOR MASTER
+ DESCARGA: https://github.com/adafruit/Adafruit_Sensor*/
 
 
 #include <DHT.h>
