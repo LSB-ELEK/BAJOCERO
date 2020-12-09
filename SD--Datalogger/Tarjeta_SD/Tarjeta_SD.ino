@@ -29,7 +29,7 @@ void loop() {
   if((millis()-ant_millis)>periodo){    //cada (periodo) escribir el siguiente numero
         ant_millis=millis();
     dato_a_guardar++;
-    Serial.print("Dato fuera: ");Serial.println(dato_a_guardar);
+    //Serial.print("Dato fuera: ");Serial.println(dato_a_guardar);
 
     
     archivo = SD.open("datos.txt", FILE_WRITE);   //abrir el archivo en modo escritura
