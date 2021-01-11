@@ -1,30 +1,41 @@
-#include <DHT.h>
-#include <LiquidCrystal_I2C.h>
+#include <Wire.h>
+#include "RTClib.h"
 
-#define DHTTYPE DHT22 //MODELO DEL SENSOR A UTILIZAR
-const int DHTPin = 5;
+RTC_DS1307 rtc;
 
-DHT dht(DHTPin, DHTTYPE);
-LiquidCrystal_I2C lcd(0x27,20,4);
-void setup(){
-
-  lcd.init();
-  lcd.backlight();
-  dht.begin();
+void setup () {
+  Serial.begin(9600);
+  rtc.begin(); //Inicializamos el RTC
+  Serial.println("Estableciendo Hora y fecha...");
+  rtc.adjust(DateTime((__DATE__), (__TIME__)));
+  Serial.println("DS1307 actualizado con la hora y fecha que se compilo este programa:");
+  Serial.print("Fecha = ");
+  Serial.print(__DATE__);
+  Serial.print("  Hora = ");
+  Serial.println(__TIME__);
 }
 
-void loop(){
+void printDate(DateTime date)
+{
+  Serial.print(date.year(), DEC);
+  Serial.print('/');
+  Serial.print(date.month(), DEC);
+  Serial.print('/');
+  Serial.print(date.day(), DEC);
+  Serial.print(" (");
+  Serial.print(") ");
+  Serial.print(date.hour(), DEC);
+  Serial.print(':');
+  Serial.print(date.minute(), DEC);
+  Serial.print(':');
+  Serial.print(date.second(), DEC);
+  Serial.println();
+}
 
-  float h = dht.readHumidity();
-  float t = dht.readTemperature(); // dht.readTemperature(true); LEER EN FAHRENHEIT
-  lcd.setCursor(0,0);
-  lcd.print("Humedad = ");
-  lcd.print(h);
-  lcd.print("%");
-  lcd.setCursor(0,1);
-  lcd.print("Temp = ");
-  lcd.print(t);
-  lcd.print("\337C");
-  delay(2000);
-  lcd.clear();
+void loop() {
+  // Obtener fecha actual y mostrar por Serial
+  DateTime now = rtc.now();
+  printDate(now);
+
+  delay(3000);
 }
