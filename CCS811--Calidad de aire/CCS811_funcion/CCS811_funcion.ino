@@ -21,11 +21,11 @@ void loop() {
 
 String CCS811(){
     String z="";
-    String co2;
-    String tvoc;
+    String co2="";
+    String tvoc="";
     if(ccs.available()){
         if(!ccs.readData()){
-            co2 = ccs.geteCO2();
+            co2 = ccs.geteCO2();              
             tvoc = ccs.getTVOC();
             z = co2 + ", " + tvoc + ", ";
             Serial.print("CO2: ");
@@ -36,13 +36,13 @@ String CCS811(){
         }
         else{
             Serial.println("Error en la lectura de datos!!");
-            co2 = "---";
+            co2 = "---";                        //EN CASO DE ERROR DE LECTURA IMPRIME "---" EN LUGAR DEL DATO
             tvoc = "---";
             z = co2 + ", " + tvoc + ", ";
         }
     }else{
         co2 = "xxx";
-        tvoc = "xxx";
+        tvoc = "xxx";                           //EN CASO DE FALLO DEL SENSOR IMPRIME "xxx" EN LUGAR DEL DATO
         z = co2 + ", " + tvoc + ", ";
     }
     return z;
