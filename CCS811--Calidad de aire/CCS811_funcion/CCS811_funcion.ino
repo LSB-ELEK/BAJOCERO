@@ -28,11 +28,6 @@ String CCS811(){
             co2 = ccs.geteCO2();              
             tvoc = ccs.getTVOC();
             z = co2 + ", " + tvoc + ", ";
-            Serial.print("CO2: ");
-            Serial.print(ccs.geteCO2());      //Comando de CO2
-            Serial.print("ppm, TVOC: ");
-            Serial.print(ccs.getTVOC());      //Comando de TVOC
-            Serial.println("ppb");
         }
         else{
             Serial.println("Error en la lectura de datos!!");
