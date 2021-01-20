@@ -1,11 +1,11 @@
 //Incluimos las librerias necesarias
 
 #include <TinyGPS.h> //Nos da exactamente las cordenadas de forma simple
-#include <SoftwareSerial.h> //Para tener un segundo puerto serie
+
 
  
 TinyGPS gps;
-//SoftwareSerial Serial2(17, 16);
+//SoftwareSerial Serial1(17, 16);
 
 String dato;
 
@@ -14,14 +14,15 @@ String dato;
 void setup()
 {
    Serial.begin(9600);  // ordenador--> Arduino
-   Serial2.begin(9600); // arduino -->> GPS
-//   Serial2.begin(9600);  // arduino -->> GPS 
+   Serial1.begin(9600); // arduino -->> GPS
+
 }
  
 void loop()
 {
   Serial.println(GPS());
-}
+  delay(1000);
+} 
 
 
 
@@ -32,9 +33,9 @@ String GPS(){
    // Intentar recibir secuencia durante un segundo
    for (unsigned long start = millis(); millis() - start < 1000;)
    {
-      while (Serial2.available())
+      while (Serial1.available())
       {
-         char c = Serial2.read();  //Guarda dentro de c los valores que de el GPS
+         char c = Serial1.read();  //Guarda dentro de c los valores que de el GPS
          if (gps.encode(c))  //Desodifica la nueva secuencia recibida
             newData = true;
       }
