@@ -1,12 +1,14 @@
-#include "SD.h"
-#include"SPI.h"
+#include <SD.h>
+#include <SPI.h>
 #include <RTClib.h>
 #include <Wire.h>
 #include <TinyGPS.h>
+#include <Adafruit_BMP280.h>
 
 File LOG_DATA;
 RTC_DS1307 rtc;
 TinyGPS gps;
+Adafruit_BMP280 bmp;
 
 const int CSpin = 53;
 
@@ -23,11 +25,12 @@ void setup() {
   SD.begin(CSpin);
   rtc.begin();
   rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
+  bmp.begin();
 
 }
 
 void loop() {
-  datos = RTC() + GPS();
+  datos = RTC() + GPS() + BAROMETRO();
   SDdatalogger(datos);
   delay(1000);
 
@@ -102,3 +105,14 @@ String GPS(){
    
  return dato_gps;
 }
+
+String BAROMETRO(){
+    String temperatura = "";
+    String presion = "";
+    String altitud = "";
+    temperatura = bmp.readTemperature();
+    presion = bmp.readPressure();
+    altitud = bmp.readAltitude(1013.25);
+    String b = temperatura + ", " + presion + ", " + altitud + ", ";
+    return b;
+  }
