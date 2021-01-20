@@ -7,7 +7,7 @@
 TinyGPS gps;
 //SoftwareSerial Serial1(17, 16);
 
-String dato;
+String dato_gps;
 
 
 
@@ -28,7 +28,7 @@ void loop()
 
 String GPS(){
    
-   bool newData = false;  //Funcion para saber si hay datos
+   bool newData = false;  //Funcion para saber si hay dato_gpss
    
    // Intentar recibir secuencia durante un segundo
    for (unsigned long start = millis(); millis() - start < 1000;)
@@ -47,8 +47,8 @@ String GPS(){
       unsigned long age;
       gps.f_get_position(&flat, &flon, &age);
 
-      //Guardamos en el String todos los datos
-      dato=(
+      //Guardamos en el String todos los dato_gpss
+      dato_gps=(
       String(flat == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flat, 6) + String(" ,  ") + //Latitud
       String(flon == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flon, 6) +  String(" ,  ") + //Longitud
       String(gps.satellites() == TinyGPS::GPS_INVALID_SATELLITES ? 0 : gps.satellites()) + String(" ,  ") + //Cantidad de satelites
@@ -58,9 +58,9 @@ String GPS(){
       
      }else
        {
-          dato = String("---") + String(" ,  ") + String("---") + String(" ,  ") + String("---") + 
+          dato_gps = String("---") + String(" ,  ") + String("---") + String(" ,  ") + String("---") + 
           String(" ,  ") + String("---") + String(" ,  ") + String("---") +String(" ,  ");
        }
    
- return dato;
+ return dato_gps;
 }

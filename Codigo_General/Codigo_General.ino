@@ -10,7 +10,7 @@ TinyGPS gps;
 
 const int CSpin = 53;
 
-String First_Line = "FECHA, HORA, ";
+String First_Line = "FECHA, HORA, LATITUD, LONGITUD, SATELITES, PRECISION, AGE,  ";
 bool first_line = 0;
 
 String datos = "";
@@ -87,17 +87,17 @@ String GPS(){
 
       //Guardamos en el String todos los dato_gpss
       dato_gps=(
-      String(flat == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flat, 6) + String(" ,  ") + //Latitud
-      String(flon == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flon, 6) +  String(" ,  ") + //Longitud
-      String(gps.satellites() == TinyGPS::GPS_INVALID_SATELLITES ? 0 : gps.satellites()) + String(" ,  ") + //Cantidad de satelites
-      String(gps.hdop() == TinyGPS::GPS_INVALID_HDOP ? 0 : gps.hdop()) + String(" ,  ") + //Precision de la informacion
-      String(age) + String(" ,  ")
+      String(flat == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flat, 6) + String(", ") + //Latitud
+      String(flon == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flon, 6) +  String(", ") + //Longitud
+      String(gps.satellites() == TinyGPS::GPS_INVALID_SATELLITES ? 0 : gps.satellites()) + String(", ") + //Cantidad de satelites
+      String(gps.hdop() == TinyGPS::GPS_INVALID_HDOP ? 0 : gps.hdop()) + String(", ") + //Precision de la informacion
+      String(age) + String(", ")
       );
       
      }else
        {
-          dato_gps = String("---") + String(" ,  ") + String("---") + String(" ,  ") + String("---") + 
-          String(" ,  ") + String("---") + String(" ,  ") + String("---") +String(" ,  ");
+          dato_gps = String("---") + String(", ") + String("---") + String(", ") + String("---") + 
+          String(", ") + String("---") + String(", ") + String("---") +String(", ");
        }
    
  return dato_gps;

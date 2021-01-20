@@ -39,7 +39,7 @@ String RTC(){
     int mes = now.month();
     int ano = now.year();
     
-    shora = (String) hora;
+    shora = (String) hora +"" ;
 Serial.println(shora);
     return X;
 }
