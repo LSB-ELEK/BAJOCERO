@@ -1,22 +1,26 @@
 //Incluimos las librerias necesarias
 
-#include <SoftwareSerial.h> //Para tener un segundo puerto serie
 #include <TinyGPS.h> //Nos da exactamente las cordenadas de forma simple
+#include <SoftwareSerial.h> //Para tener un segundo puerto serie
+
  
 TinyGPS gps;
-SoftwareSerial softSerial(4, 3); //Asignar el puerto a los pines(Al GPS)
+//SoftwareSerial Serial2(17, 16);
 
-String Datos; //Aqui guarda todos los datos
 String dato;
+
+
 
 void setup()
 {
    Serial.begin(9600);  // ordenador--> Arduino
-   softSerial.begin(9600);  // arduino -->> GPS 
+   Serial2.begin(9600); // arduino -->> GPS
+//   Serial2.begin(9600);  // arduino -->> GPS 
 }
  
 void loop()
 {
+  Serial.println(GPS());
 }
 
 
@@ -28,9 +32,9 @@ String GPS(){
    // Intentar recibir secuencia durante un segundo
    for (unsigned long start = millis(); millis() - start < 1000;)
    {
-      while (softSerial.available())
+      while (Serial2.available())
       {
-         char c = softSerial.read();  //Guarda dentro de c los valores que de el GPS
+         char c = Serial2.read();  //Guarda dentro de c los valores que de el GPS
          if (gps.encode(c))  //Desodifica la nueva secuencia recibida
             newData = true;
       }
@@ -54,7 +58,7 @@ String GPS(){
      }else
        {
           dato = String("---") + String(" ,  ") + String("---") + String(" ,  ") + String("---") + 
-          String(" ,  ") + String("---") + String(" ,  ") + String("---") +String(" ,  ") +;
+          String(" ,  ") + String("---") + String(" ,  ") + String("---") +String(" ,  ");
        }
    
  return dato;
