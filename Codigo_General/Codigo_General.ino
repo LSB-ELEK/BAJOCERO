@@ -4,15 +4,28 @@
 #include <Wire.h>
 #include <TinyGPS.h>
 #include <Adafruit_BMP280.h>
+#include <Adafruit_CCS811.h>
+#include <DHT.h>
+#define DHTTYPE DHT22
+#include <Adafruit_Sensor.h>
+#include <Adafruit_TSL2561_U.h>
+
+
+int analogApin = 0;
+
 
 File LOG_DATA;
 RTC_DS1307 rtc;
 TinyGPS gps;
 Adafruit_BMP280 bmp;
+Adafruit_CCS811 ccs;
+const int DHTPin = 5;
+DHT dht (DHTPin, DHTTYPE);
+Adafruit_TSL2561_Unified tsl = Adafruit_TSL2561_Unified(TSL2561_ADDR_FLOAT, 12345);
 
 const int CSpin = 53;
 
-String First_Line = "FECHA, HORA, LATITUD, LONGITUD, SATELITES, PRECISION, AGE,  ";
+String First_Line = "FECHA, HORA, LATITUD, LONGITUD, SATELITES, PRECISION, AGE, TEMPERATURA_BMP, PRESION_BMP, ALTITUD_BMP, CO2, TVOC, HUMEDAD_DHT, TEMPERATURA_DHT, LUZ_TSL, LUZ_UV";
 bool first_line = 0;
 
 String datos = "";
@@ -26,11 +39,13 @@ void setup() {
   rtc.begin();
   rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
   bmp.begin();
+  ccs.begin();
+  dht.begin();
 
 }
 
 void loop() {
-  datos = RTC() + GPS() + BAROMETRO();
+  datos = RTC() + GPS() + BAROMETRO() + CCS811() + dht22() + TSL() + LuzUV() ;
   SDdatalogger(datos);
   delay(1000);
 
@@ -116,3 +131,62 @@ String BAROMETRO(){
     String b = temperatura + ", " + presion + ", " + altitud + ", ";
     return b;
   }
+
+String CCS811(){
+    String z="";
+    String co2="";
+    String tvoc="";
+    if(ccs.available()){
+        if(!ccs.readData()){
+            co2 = ccs.geteCO2();              
+            tvoc = ccs.getTVOC();
+            z = co2 + ", " + tvoc + ", ";
+        }
+        else{
+            co2 = "---";                        //EN CASO DE ERROR DE LECTURA IMPRIME "---" EN LUGAR DEL DATO
+            tvoc = "---";
+            z = co2 + ", " + tvoc + ", ";
+        }
+    }else{
+        co2 = "xxx";
+        tvoc = "xxx";                           //EN CASO DE FALLO DEL SENSOR IMPRIME "xxx" EN LUGAR DEL DATO
+        z = co2 + ", " + tvoc + ", ";
+    }
+    return z;
+}
+
+String dht22(){
+    String h = "";
+    String t = "";
+    h = dht.readHumidity();
+    t = dht.readTemperature();
+    String r = h + ", " + t + ", ";
+    return r;
+}
+
+String TSL(){
+  String lux;
+  int luz;
+  sensors_event_t event;
+  tsl.getEvent(&event);
+  luz = event.light;
+  
+  if (event.light)
+   {
+     lux= String (luz) + ", ";
+  
+   }
+    else
+     {
+      lux = String("---") + ", ";
+     }
+ return lux;
+}
+
+String LuzUV()
+{
+  String uv = "";
+  uv = analogRead(analogApin);
+  String p = uv + ", " ;
+  return p;
+}
