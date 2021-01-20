@@ -26,9 +26,9 @@ String BMP280(){
     String presion = "";
     String altitud = "";
     temperatura = bmp.readTemperature();
-    presion = bmp.readPresure();
+    presion = bmp.readPressure();
     altitud = bmp.readAltitude(1013.25);
-    String b = temperatura + ", " + presion", " + altitud ", ";
+    String b = temperatura + ", " + presion + ", " + altitud + ", ";
     return b;
   }
   
