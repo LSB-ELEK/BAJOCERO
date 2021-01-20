@@ -16,10 +16,8 @@ void loop(void)
 {  
  
 }
+
   
-
-
-
 String Luz()
  {
  
@@ -31,7 +29,6 @@ String Luz()
      String luz = "";
      Serial.print(event.light); Serial.println(" luz");
      luz = event.light;
-     
    }
     else
      {

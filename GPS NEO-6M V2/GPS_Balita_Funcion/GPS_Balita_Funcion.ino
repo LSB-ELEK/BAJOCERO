@@ -7,6 +7,7 @@ TinyGPS gps;
 SoftwareSerial softSerial(4, 3); //Asignar el puerto a los pines(Al GPS)
 
 String Datos; //Aqui guarda todos los datos
+String dato;
 
 void setup()
 {
@@ -20,7 +21,7 @@ void loop()
 
 
 
-                                                                                                String GPS()
+String GPS()
 {
    
    bool newData = false;  //Funcion para saber si hay datos
@@ -59,4 +60,5 @@ void loop()
        }
    
  return dato;
+ return Datos;
 }
