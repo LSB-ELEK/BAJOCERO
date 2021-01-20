@@ -21,8 +21,7 @@ void loop()
 
 
 
-String GPS()
-{
+String GPS(){
    
    bool newData = false;  //Funcion para saber si hay datos
    
@@ -44,21 +43,19 @@ String GPS()
       gps.f_get_position(&flat, &flon, &age);
 
       //Guardamos en el String todos los datos
-      Datos=(
-      String(" ,  ") + String(flat == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flat, 6) + //Latitud
-      String(" ,  ") + String(flon == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flon, 6) +  //Longitud
-      String(" ,  ") + String(gps.satellites() == TinyGPS::GPS_INVALID_SATELLITES ? 0 : gps.satellites()) + //Cantidad de satelites
-      String(" ,  ") + String(gps.hdop() == TinyGPS::GPS_INVALID_HDOP ? 0 : gps.hdop()) + //Precision de la informacion
-      String(" ,  ") + String(age)
+      dato=(
+      String(flat == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flat, 6) + String(" ,  ") + //Latitud
+      String(flon == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flon, 6) +  String(" ,  ") + //Longitud
+      String(gps.satellites() == TinyGPS::GPS_INVALID_SATELLITES ? 0 : gps.satellites()) + String(" ,  ") + //Cantidad de satelites
+      String(gps.hdop() == TinyGPS::GPS_INVALID_HDOP ? 0 : gps.hdop()) + String(" ,  ") + //Precision de la informacion
+      String(age) + String(" ,  ")
       );
       
-     }
-   
-     else
+     }else
        {
-          dato = String("-----");
+          dato = String("---") + String(" ,  ") + String("---") + String(" ,  ") + String("---") + 
+          String(" ,  ") + String("---") + String(" ,  ") + String("---") +String(" ,  ") +;
        }
    
  return dato;
- return Datos;
 }
