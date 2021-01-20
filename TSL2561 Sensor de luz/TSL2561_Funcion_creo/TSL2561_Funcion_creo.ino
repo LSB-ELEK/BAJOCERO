@@ -14,13 +14,13 @@ void setup(void)
 
 void loop(void) 
 {  
-  Luz;
+ 
 }
   
 
 
 
-void Luz()
+String Luz()
  {
  
   sensors_event_t event;
@@ -28,12 +28,14 @@ void Luz()
  
   if (event.light)
    {
-      Serial.print(event.light); Serial.println(" luz");
+     String luz = "";
+     Serial.print(event.light); Serial.println(" luz");
+     luz = event.light;
+     
    }
     else
      {
-     //Puede ser que el sensor se sature (Luz = 0) por si pasa eso
      Serial.println("Sensor overload");
      }
-  delay(250);
+  return luz;
 }

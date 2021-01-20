@@ -10,13 +10,13 @@ void setup()
  
 void loop() 
 {
- LuzUV;
+ 
 }
 
-void LuzUV()
+String LuzUV()
 {
-  UV = analogRead(analogApin);
-  Serial.print(" Nivel UV: ");
-  Serial.print(UV);
-  delay(200);
+  String uv = "";
+  uv = analogRead(analogApin);
+  String p = uv + ", " ;
+  return p;
 }
