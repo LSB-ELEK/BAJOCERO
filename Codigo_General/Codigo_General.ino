@@ -9,6 +9,7 @@
 #define DHTTYPE DHT22
 #include <Adafruit_Sensor.h>
 #include <Adafruit_TSL2561_U.h>
+#include <LiquidCrystal_I2C.h>
 
 
 int analogApin = 0;
@@ -22,6 +23,7 @@ Adafruit_CCS811 ccs;
 const int DHTPin = 5;
 DHT dht (DHTPin, DHTTYPE);
 Adafruit_TSL2561_Unified tsl = Adafruit_TSL2561_Unified(TSL2561_ADDR_FLOAT, 12345);
+LiquidCrystal_I2C LCD(0x27, 16, 2);
 
 const int CSpin = 53;
 
@@ -31,24 +33,43 @@ bool first_line = 0;
 String datos = "";
 String dato_gps = "";
 
+long ant_millis=0;
+long ant_millis_lcd=0;
+
+unsigned int contador_datos = 0;
+bool lcd_apagado = false;
+
+
 
 void setup() {
   Serial.begin(9600);
   Serial1.begin(9600);
   SD.begin(CSpin);
   rtc.begin();
-  rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
-  bmp.begin();
+  //rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
+  bmp.begin(0x76);
   ccs.begin();
   dht.begin();
+  LCD.begin();
 
 }
 
 void loop() {
+
+  if(millis()-ant_millis>19000){
+    ant_millis = millis();
   datos = RTC() + GPS() + BAROMETRO() + CCS811() + dht22() + TSL() + LuzUV() ;
   SDdatalogger(datos);
-  delay(1000);
-
+  contador_datos++;
+  LED();
+  lcd();
+  }
+  if((millis()-ant_millis_lcd>5000)&&(lcd_apagado==false)){
+    ant_millis_lcd = millis();
+    LCD.noBacklight();
+    LCD.noDisplay();
+    lcd_apagado = true;
+  }
 }
 
 void SDdatalogger(String x){
@@ -126,8 +147,8 @@ String BAROMETRO(){
     String presion = "";
     String altitud = "";
     temperatura = bmp.readTemperature();
-    presion = bmp.readPressure();
-    altitud = bmp.readAltitude(1013.25);
+    presion = bmp.readPressure()/100;
+    altitud = bmp.readAltitude(1005.1);
     String b = temperatura + ", " + presion + ", " + altitud + ", ";
     return b;
   }
@@ -189,4 +210,26 @@ String LuzUV()
   uv = analogRead(analogApin);
   String p = uv + ", " ;
   return p;
+}
+
+void LED(){
+    digitalWrite(3, HIGH);
+    tone(4, 5000, 1000);
+    delay(1000);
+    digitalWrite(3, LOW);
+}
+
+void lcd(){
+  
+  LCD.backlight();
+  LCD.display();
+  LCD.setCursor(0, 0);
+  LCD.print(" Dato Guardado");
+  LCD.setCursor(0, 1);
+  LCD.print("                ");
+  LCD.setCursor(0, 1);
+  LCD.print(contador_datos);
+  ant_millis_lcd = millis();
+  lcd_apagado = false;
+  
 }

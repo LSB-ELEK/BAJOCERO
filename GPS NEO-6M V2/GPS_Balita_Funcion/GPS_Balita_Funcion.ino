@@ -5,7 +5,7 @@
 
  
 TinyGPS gps;
-//SoftwareSerial Serial1(17, 16);
+
 
 String dato_gps;
 
@@ -47,7 +47,7 @@ String GPS(){
       unsigned long age;
       gps.f_get_position(&flat, &flon, &age);
 
-      //Guardamos en el String todos los dato_gpss
+      //Guardamos en el String todos los dato_gps
       dato_gps=(
       String(flat == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flat, 6) + String(" ,  ") + //Latitud
       String(flon == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flon, 6) +  String(" ,  ") + //Longitud
