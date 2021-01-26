@@ -63,13 +63,13 @@ void loop() {
     ant_millis = millis();
   datos = RTC() + GPS() + BAROMETRO() + CCS811() + dht22() + TSL() + LuzUV() ;
   SDdatalogger(datos);
-  contador_datos++;
   LED();
   lcd();
   }
   if(contador_datos >= 100){
       ARCHIVO = "dato" + String(contador_archivos) + ".csv";
       contador_archivos++;
+      contador_datos = 0;
   }
   if((millis()-ant_millis_lcd>5000)&&(lcd_apagado==false)){
     ant_millis_lcd = millis();
@@ -77,6 +77,7 @@ void loop() {
     LCD.noDisplay();
     lcd_apagado = true;
   }
+  contador_datos++;
 }
 
 void SDdatalogger(String x){
@@ -280,9 +281,9 @@ void lcd(){
   LCD.display();
   LCD.clear();
   LCD.setCursor(0, 0);
-  LCD.print(" Dato Guardado");
+  LCD.print("N");LCD.print((char)223);LCD.print(" ARCHIVO: ");LCD.print(contador_archivos);
   LCD.setCursor(0, 1);
-  LCD.print(contador_datos);
+  LCD.print("N");LCD.print((char)223);LCD.print(" DATO: ");LCD.print(contador_datos);
   ant_millis_lcd = millis();
   lcd_apagado = false;
   
