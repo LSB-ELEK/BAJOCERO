@@ -68,7 +68,7 @@ void loop() {
   lcd();
   }
   if(contador_datos >= 100){
-      ARCHIVO = "dato" + String(contador_archivos) + ".csv"
+      ARCHIVO = "dato" + String(contador_archivos) + ".csv";
       contador_archivos++;
   }
   if((millis()-ant_millis_lcd>5000)&&(lcd_apagado==false)){
