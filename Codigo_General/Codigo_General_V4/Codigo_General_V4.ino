@@ -59,7 +59,7 @@ void setup() {
 
 void loop() {
 
-  if(millis()-ant_millis>5000){
+  if(millis()-ant_millis>19000){
     ant_millis = millis();
   datos = RTC() + GPS() + BAROMETRO() + CCS811() + dht22() + TSL() + LuzUV() ;
   SDdatalogger(datos);
@@ -70,7 +70,7 @@ void loop() {
   contador_datos++;
 
   }
-  if(contador_datos > 3){
+  if(contador_datos > 100){
       contador_archivos++;
       ARCHIVO = "dato_" + String(contador_archivos) + ".csv";
       contador_datos = 1;
@@ -159,7 +159,7 @@ String BAROMETRO(){
     String altitud = "";
     temperatura = bmp.readTemperature();
     presion = bmp.readPressure()/100;
-    altitud = bmp.readAltitude(1013.25);
+    altitud = bmp.readAltitude(1005.1);
     String b = temperatura + ", " + presion + ", " + altitud + ", ";
     return b;
   }
