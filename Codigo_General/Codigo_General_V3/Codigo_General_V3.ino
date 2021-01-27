@@ -37,11 +37,11 @@ String dato_gps = "";
 long ant_millis=0;
 long ant_millis_lcd=0;
 
-unsigned int contador_datos = 0;
+unsigned int contador_datos = 1;
 unsigned int contador_archivos = 1;
 bool lcd_apagado = false;
 
-String ARCHIVO = "dato1.csv";
+String ARCHIVO = "dato_1.csv";
 
 
 void setup() {
@@ -65,11 +65,15 @@ void loop() {
   SDdatalogger(datos);
   LED();
   lcd();
+  Serial.print("Nº Archivo: ");Serial.println(ARCHIVO);
+  Serial.print("Nº Dato: ");Serial.println(contador_datos);
+  contador_datos++;
+
   }
-  if(contador_datos >= 100){
-      ARCHIVO = "dato" + String(contador_archivos) + ".csv";
+  if(contador_datos > 100){
       contador_archivos++;
-      contador_datos = 0;
+      ARCHIVO = "dato_" + String(contador_archivos) + ".csv";
+      contador_datos = 1;
   }
   if((millis()-ant_millis_lcd>5000)&&(lcd_apagado==false)){
     ant_millis_lcd = millis();
@@ -77,7 +81,6 @@ void loop() {
     LCD.noDisplay();
     lcd_apagado = true;
   }
-  contador_datos++;
 }
 
 void SDdatalogger(String x){
@@ -270,7 +273,7 @@ String LuzUV()
 
 void LED(){
     digitalWrite(3, HIGH);
-    tone(4, 5000, 1000);
+    //tone(4, 5000, 1000);
     delay(1000);
     digitalWrite(3, LOW);
 }
