@@ -24,7 +24,7 @@ Adafruit_CCS811 ccs;
 const int DHTPin = 5;
 DHT dht (DHTPin, DHTTYPE);
 Adafruit_TSL2561_Unified tsl = Adafruit_TSL2561_Unified(TSL2561_ADDR_FLOAT, 12345);
-LiquidCrystal_I2C LCD(0x27, 16, 2);
+LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 const int CSpin = 53;
 
@@ -53,7 +53,7 @@ void setup() {
   bmp.begin(0x76);
   ccs.begin();
   dht.begin();
-  LCD.begin();
+//  lcd.begin(0x27);
 
 }
 
@@ -64,7 +64,7 @@ void loop() {
   datos = RTC() + GPS() + BAROMETRO() + CCS811() + dht22() + TSL() + LuzUV() ;
   SDdatalogger(datos);
   LED();
-  lcd();
+  lcd1();
   Serial.print("Nº Archivo: ");Serial.println(ARCHIVO);
   Serial.print("Nº Dato: ");Serial.println(contador_datos);
   contador_datos++;
@@ -72,13 +72,13 @@ void loop() {
   }
   if(contador_datos > 3){
       contador_archivos++;
-      ARCHIVO = "dato_" + String(contador_archivos) + ".csv";
+      ARCHIVO = "dato_" + (String) contador_archivos + ".csv";
       contador_datos = 1;
   }
   if((millis()-ant_millis_lcd>5000)&&(lcd_apagado==false)){
     ant_millis_lcd = millis();
-    LCD.noBacklight();
-    LCD.noDisplay();
+    lcd.noBacklight();
+    lcd.noDisplay();
     lcd_apagado = true;
   }
 }
@@ -278,15 +278,15 @@ void LED(){
     digitalWrite(3, LOW);
 }
 
-void lcd(){
+void lcd1 (){
   
-  LCD.backlight();
-  LCD.display();
-  LCD.clear();
-  LCD.setCursor(0, 0);
-  LCD.print("N");LCD.print((char)223);LCD.print(" ARCHIVO: ");LCD.print(contador_archivos);
-  LCD.setCursor(0, 1);
-  LCD.print("N");LCD.print((char)223);LCD.print(" DATO: ");LCD.print(contador_datos);
+  lcd.backlight();
+  lcd.display();
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("N");lcd.print((char)223);lcd.print(" ARCHIVO: ");lcd.print(contador_archivos);
+  lcd.setCursor(0, 1);
+  lcd.print("N");lcd.print((char)223);lcd.print(" DATO: ");lcd.print(contador_datos);
   ant_millis_lcd = millis();
   lcd_apagado = false;
   
