@@ -18,20 +18,3 @@ void setup() {
 void loop() {
   bool newData = 0;
   String Datos;
-
-  {
-      while (Serial1.available())
-      {
-         char c = Serial1.read();  //Guarda dentro de c los valores que de el GPS
-         if (gps.encode(c))  //Desodifica la nueva secuencia recibida
-            newData = true;
-      }
-   }
-    if (newData){
-        Datos = gps.time.hour();
-        Serial.println(Datos);
-        
-         }
-   
-
-}
