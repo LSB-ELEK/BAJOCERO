@@ -54,7 +54,7 @@ void setup() {
   bmp.begin(0x76);
   ccs.begin();
   dht.begin();
-  //lcd.begin();
+  //LCD.begin();
   LCD.noBacklight();
   LCD.noDisplay();
   while(!waitGPS){
