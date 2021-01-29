@@ -49,17 +49,32 @@ void setup() {
   Serial1.begin(9600);
   SD.begin(CSpin);
   rtc.begin();
-  //rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
   bmp.begin(0x76);
   ccs.begin();
   dht.begin();
   LCD.begin();
-
+  while(!waitGPS){
+      bool waitGPS = false;  //Funcion para saber si hay dato_gpss
+     
+     // Intentar recibir secuencia durante un segundo
+      for (unsigned long start = millis(); millis() - start < 1000;)
+      {
+          while (Serial1.available())
+          {
+             char c = Serial1.read();  //Guarda dentro de c los valores que de el GPS
+             if (gps.encode(c))  //Desodifica la nueva secuencia recibida
+                waitGPS = true;
+          }
+      }
+  }
+  
+  rtc.adjust(DateTime(get_date(TinyGPS &gps)));
+  
 }
 
 void loop() {
 
-  if(millis()-ant_millis>19000){
+  if(millis()-ant_millis>29000){
     ant_millis = millis();
   datos = RTC() + GPS() + BAROMETRO() + CCS811() + dht22() + TSL() + LuzUV() ;
   SDdatalogger(datos);
@@ -72,7 +87,7 @@ void loop() {
   }
   if(contador_datos > 100){
       contador_archivos++;
-      ARCHIVO = "dato_" + String(contador_archivos) + ".csv";
+      ARCHIVO = "dato_" + (String) contador_archivos + ".csv";
       contador_datos = 1;
   }
   if((millis()-ant_millis_lcd>5000)&&(lcd_apagado==false)){
@@ -159,7 +174,7 @@ String BAROMETRO(){
     String altitud = "";
     temperatura = bmp.readTemperature();
     presion = bmp.readPressure()/100;
-    altitud = bmp.readAltitude(1005.1);
+    altitud = bmp.readAltitude(1013.25);
     String b = temperatura + ", " + presion + ", " + altitud + ", ";
     return b;
   }
@@ -290,4 +305,20 @@ void lcd(){
   ant_millis_lcd = millis();
   lcd_apagado = false;
   
+}
+
+String get_date(TinyGPS &gps)
+{
+  int year;
+  byte month, day, hour, minute, second, hundredths;
+  unsigned long age;
+  gps.crack_datetime(&year, &month, &day, &hour, &minute, &second, &hundredths, &age);
+  if (age == TinyGPS::GPS_INVALID_AGE)
+    Serial.print("********** ******** ");
+  else
+  {
+    String sz;
+    sz = (String) year + ", " + (String) month + ", " + (String) day + ", " + (String) hour + ", " + (String) minute + ", " + (String) second;
+    return sz;
+  }
 }

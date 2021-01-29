@@ -1,4 +1,4 @@
-//Incluimos las librerias necesarias
+ //Incluimos las librerias necesarias
 
 #include <TinyGPS.h> //Nos da exactamente las cordenadas de forma simple
 
