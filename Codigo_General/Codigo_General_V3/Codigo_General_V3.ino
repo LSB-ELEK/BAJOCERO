@@ -53,13 +53,14 @@ void setup() {
   bmp.begin(0x76);
   ccs.begin();
   dht.begin();
-  lcd.begin();
-
+  //lcd.begin();
+  lcd.noBacklight();
+  lcd.noDisplay();
 }
 
 void loop() {
 
-  if(millis()-ant_millis>3000){
+  if(millis()-ant_millis>30000){
     ant_millis = millis();
   datos = RTC() + GPS() + BAROMETRO() + CCS811() + dht22() + TSL() + LuzUV() ;
   SDdatalogger(datos);
@@ -70,17 +71,17 @@ void loop() {
   contador_datos++;
 
   }
-  if(contador_datos > 2){
+  if(contador_datos > 100){
       contador_archivos++;
       ARCHIVO = "dato_" + (String) contador_archivos + ".csv";
       contador_datos = 1;
   }
-  if((millis()-ant_millis_lcd>5000)&&(lcd_apagado==false)){
+  /*if((millis()-ant_millis_lcd>5000)&&(lcd_apagado==false)){
     ant_millis_lcd = millis();
     lcd.noBacklight();
     lcd.noDisplay();
     lcd_apagado = true;
-  }
+  }*/
 }
 
 void SDdatalogger(String x){
