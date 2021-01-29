@@ -54,7 +54,9 @@ void setup() {
   bmp.begin(0x76);
   ccs.begin();
   dht.begin();
-  LCD.begin();
+  //lcd.begin();
+  LCD.noBacklight();
+  LCD.noDisplay();
   while(!waitGPS){
       bool waitGPS = false;  //Funcion para saber si hay dato_gpss
      
@@ -76,12 +78,12 @@ void setup() {
 
 void loop() {
 
-  if(millis()-ant_millis>29000){
+  if(millis()-ant_millis>30000){
     ant_millis = millis();
   datos = RTC() + GPS() + BAROMETRO() + CCS811() + dht22() + TSL() + LuzUV() ;
   SDdatalogger(datos);
-  LED();
-  lcd();
+  //LED();
+  //lcd();
   Serial.print("Nº Archivo: ");Serial.println(ARCHIVO);
   Serial.print("Nº Dato: ");Serial.println(contador_datos);
   contador_datos++;
