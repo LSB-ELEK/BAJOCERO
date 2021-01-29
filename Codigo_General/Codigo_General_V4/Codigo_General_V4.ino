@@ -13,8 +13,10 @@
 
 
 int analogApin = 0;
+bool waitGPS = false;
 
-
+  int GPSyear;
+  byte GPSmonth, GPSday, GPShour, GPSminute, GPSsecond;
 
 File LOG_DATA;
 RTC_DS1307 rtc;
@@ -67,8 +69,8 @@ void setup() {
           }
       }
   }
-  
-  rtc.adjust(DateTime(get_date(TinyGPS &gps)));
+  get_date(gps);
+  rtc.adjust(DateTime(GPSyear, GPSmonth, GPSday, GPShour, GPSminute, GPSsecond));
   
 }
 
@@ -307,18 +309,15 @@ void lcd(){
   
 }
 
-String get_date(TinyGPS &gps)
-{
-  int year;
-  byte month, day, hour, minute, second, hundredths;
+void get_date(TinyGPS &gps){
+  
+  byte hundredths;
   unsigned long age;
-  gps.crack_datetime(&year, &month, &day, &hour, &minute, &second, &hundredths, &age);
+  gps.crack_datetime(&GPSyear, &GPSmonth, &GPSday, &GPShour, &GPSminute, &GPSsecond, &hundredths, &age);
   if (age == TinyGPS::GPS_INVALID_AGE)
     Serial.print("********** ******** ");
   else
   {
-    String sz;
-    sz = (String) year + ", " + (String) month + ", " + (String) day + ", " + (String) hour + ", " + (String) minute + ", " + (String) second;
-    return sz;
+    gps.crack_datetime(&GPSyear, &GPSmonth, &GPSday, &GPShour, &GPSminute, &GPSsecond);
   }
 }
