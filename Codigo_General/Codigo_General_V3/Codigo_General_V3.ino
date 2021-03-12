@@ -11,6 +11,7 @@
 #include <Adafruit_TSL2561_U.h>
 #include <LiquidCrystal_I2C.h>
 
+    //#define EXTRA
 
 int analogApin = 0;
 
@@ -49,7 +50,9 @@ void setup() {
   Serial1.begin(9600);
   SD.begin(CSpin);
   rtc.begin();
-  //rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
+  #ifdef EXTRA
+      rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
+  #endif
   bmp.begin(0x76);
   ccs.begin();
   dht.begin();
@@ -63,11 +66,14 @@ void loop() {
   if(millis()-ant_millis>30000){
     ant_millis = millis();
   datos = RTC() + GPS() + BAROMETRO() + CCS811() + dht22() + TSL() + LuzUV() ;
+  Serial.println(datos);
   SDdatalogger(datos);
   LED();
   lcd1();
+  #ifdef EXTRA
   Serial.print("Nº Archivo: ");Serial.println(ARCHIVO);
   Serial.print("Nº Dato: ");Serial.println(contador_datos);
+  #endif
   contador_datos++;
 
   }

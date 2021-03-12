@@ -47,7 +47,7 @@ void setup() {
   Serial1.begin(9600);
   SD.begin(CSpin);
   rtc.begin();
-  //rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
+  rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
   bmp.begin(0x76);
   ccs.begin();
   dht.begin();
@@ -61,6 +61,7 @@ void loop() {
     ant_millis = millis();
   datos = RTC() + GPS() + BAROMETRO() + CCS811() + dht22() + TSL() + LuzUV() ;
   SDdatalogger(datos);
+  Serial.println(datos);
   contador_datos++;
   LED();
   lcd();
@@ -263,7 +264,7 @@ String LuzUV()
 
 void LED(){
     digitalWrite(3, HIGH);
-    tone(4, 5000, 1000);
+    //tone(4, 5000, 1000);
     delay(1000);
     digitalWrite(3, LOW);
 }
